@@ -1,8 +1,9 @@
 package structure
 
 import (
-	"github.com/shakinm/xlsReader/helpers"
 	"unicode/utf16"
+
+	"github.com/shakinm/xlsReader/helpers"
 )
 
 type XLUnicodeRichExtendedString struct {
@@ -36,7 +37,7 @@ type XLUnicodeRichExtendedString struct {
 	ExtRst ExtRst
 }
 
-func (s *XLUnicodeRichExtendedString) Read(stream []byte)   uint32 {
+func (s *XLUnicodeRichExtendedString) Read(stream []byte) uint32 {
 	var rgbSize uint16
 	oft := uint32(0)
 
@@ -123,8 +124,12 @@ func (s *XLUnicodeRichExtendedString) String() string {
 		runes := utf16.Decode(name)
 		return string(runes)
 	} else {
-
-		return string(s.Rgb[:])
+		name := []uint16{}
+		for _, b := range s.Rgb[:] {
+			name = append(name, uint16(b))
+		}
+		runes := utf16.Decode(name)
+		return string(runes)
 	}
 
 }
