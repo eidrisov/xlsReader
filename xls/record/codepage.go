@@ -20,7 +20,12 @@ type CodePage struct {
 	cv [2]byte
 }
 
+func (r *CodePage) GetCv() []byte {
+	bs := make([]byte, 2)
+	copy(bs[:], r.cv[:])
+	return bs
+}
 
 func (r *CodePage) Read(stream []byte) {
-	copy(r.cv[:],stream[:])
+	copy(r.cv[:], stream[:])
 }
