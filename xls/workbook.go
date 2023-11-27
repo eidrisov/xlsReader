@@ -5,8 +5,8 @@ import (
 	"encoding/binary"
 	"errors"
 
-	"github.com/shakinm/xlsReader/helpers"
-	"github.com/shakinm/xlsReader/xls/record"
+	"github.com/eidrisov/xlsReader/helpers"
+	"github.com/eidrisov/xlsReader/xls/record"
 )
 
 // Workbook struct
