@@ -2,7 +2,7 @@ package xls
 
 import (
 	"encoding/binary"
-	"github.com/shakinm/xlsReader/cfb"
+	"github.com/eidrisov/xlsReader/cfb"
 	"io"
 )
 
