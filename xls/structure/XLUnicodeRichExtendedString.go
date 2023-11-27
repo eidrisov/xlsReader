@@ -3,7 +3,7 @@ package structure
 import (
 	"unicode/utf16"
 
-	"github.com/shakinm/xlsReader/helpers"
+	"github.com/eidrisov/xlsReader/helpers"
 )
 
 type XLUnicodeRichExtendedString struct {

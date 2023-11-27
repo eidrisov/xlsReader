@@ -3,11 +3,12 @@ package record
 import (
 	"bytes"
 	"fmt"
-	"github.com/metakeule/fmtdate"
-	"github.com/shakinm/xlsReader/helpers"
-	"github.com/shakinm/xlsReader/xls/structure"
 	"strconv"
 	"strings"
+
+	"github.com/eidrisov/xlsReader/helpers"
+	"github.com/eidrisov/xlsReader/xls/structure"
+	"github.com/metakeule/fmtdate"
 )
 
 //FORMAT: Number Format

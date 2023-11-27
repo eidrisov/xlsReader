@@ -1,6 +1,6 @@
 package record
 
-import "github.com/shakinm/xlsReader/helpers"
+import "github.com/eidrisov/xlsReader/helpers"
 
 //XF: Extended Format (E0h)
 

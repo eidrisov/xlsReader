@@ -5,7 +5,7 @@ import (
 	"strings"
 	"unicode/utf16"
 
-	"github.com/shakinm/xlsReader/helpers"
+	"github.com/eidrisov/xlsReader/helpers"
 	"golang.org/x/text/encoding/charmap"
 )
 
