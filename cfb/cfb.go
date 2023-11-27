@@ -166,64 +166,67 @@ func (cfb *Cfb) getMiniFATSectors() (err error) {
 
 func (cfb *Cfb) getFatSectors() (err error) { // nolint: gocyclo
 
-	entries := DefaultDIFATEntries
+   entries := DefaultDIFATEntries
 
-	if helpers.BytesToUint32(cfb.header.NumberFATSectors[:]) < DefaultDIFATEntries {
-		entries = helpers.BytesToUint32(cfb.header.NumberFATSectors[:])
-	}
+   if helpers.BytesToUint32(cfb.header.NumberFATSectors[:]) < DefaultDIFATEntries {
+      entries = helpers.BytesToUint32(cfb.header.NumberFATSectors[:])
+   }
 
-	for i := uint32(0); i < entries; i++ {
+   for i := uint32(0); i < entries; i++ {
 
-		position := cfb.calculateOffset(cfb.header.getDIFATEntry(i))
-		sector := NewSector(&cfb.header)
+      position := cfb.calculateOffset(cfb.header.getDIFATEntry(i))
+      sector := NewSector(&cfb.header)
 
-		err := cfb.getData(position, &sector.Data)
+      err := cfb.getData(position, &sector.Data)
 
-		if err != nil {
-			return err
-		}
+      if err != nil {
+         //return err
+         break
+      }
 
-		cfb.difatPositions = append(cfb.difatPositions, sector.values(EntrySize)...)
+      cfb.difatPositions = append(cfb.difatPositions, sector.values(EntrySize)...)
 
-	}
+   }
 
-	if bytes.Compare(cfb.header.FirstDIFATSectorLocation[:], ENDOFCHAIN) == 0 {
-		return
-	}
+   if bytes.Compare(cfb.header.FirstDIFATSectorLocation[:], ENDOFCHAIN) == 0 {
+      return
+   }
 
-	position := cfb.calculateOffset(cfb.header.FirstDIFATSectorLocation[:])
-	var section = make([]byte, 0)
-	for i := uint32(0); i < helpers.BytesToUint32(cfb.header.NumberDIFATSectors[:]); i++ {
-		sector := NewSector(&cfb.header)
-		err := cfb.getData(position, &sector.Data)
+   position := cfb.calculateOffset(cfb.header.FirstDIFATSectorLocation[:])
+   var section = make([]byte, 0)
+   for i := uint32(0); i < helpers.BytesToUint32(cfb.header.NumberDIFATSectors[:]); i++ {
+      sector := NewSector(&cfb.header)
+      err := cfb.getData(position, &sector.Data)
 
-		if err != nil {
-			return err
-		}
+      if err != nil {
+         //return err
+         break
+      }
 
-		for _, value := range sector.getFATSectorLocations() {
-			section = append(section, value)
-			if len(section) == 4 {
+      for _, value := range sector.getFATSectorLocations() {
+         section = append(section, value)
+         if len(section) == 4 {
 
-				position = cfb.calculateOffset(section)
-				sectorF := NewSector(&cfb.header)
-				err := cfb.getData(position, &sectorF.Data)
+            position = cfb.calculateOffset(section)
+            sectorF := NewSector(&cfb.header)
+            err := cfb.getData(position, &sectorF.Data)
 
-				if err != nil {
-					return err
-				}
-				cfb.difatPositions = append(cfb.difatPositions, sectorF.values(EntrySize)...)
+            if err != nil {
+               //return err
+               break
+            }
+            cfb.difatPositions = append(cfb.difatPositions, sectorF.values(EntrySize)...)
 
-				section = make([]byte, 0)
-			}
+            section = make([]byte, 0)
+         }
 
-		}
+      }
 
-		position = cfb.calculateOffset(sector.getNextDIFATSectorLocation())
+      position = cfb.calculateOffset(sector.getNextDIFATSectorLocation())
 
-	}
+   }
 
-	return
+   return
 }
 func (cfb *Cfb) getDataFromMiniFat(miniFatSectorLocation uint32, offset uint32) (data []byte, err error) {
 
